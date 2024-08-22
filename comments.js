@@ -1,48 +1,16 @@
 // Create a web server
+// Create a route that sends a response to the client
+
 const express = require('express');
-const app = express();
+const server = express();
 const port = 3000;
 
-// Middleware
-app.use(express.json());
-
-// Data
-let comments = [
-  { id: 1, author: 'John Doe', text: 'Hello world' },
-  { id: 2, author: 'Jane Doe', text: 'Hi everyone' },
-  { id: 3, author: 'Alice', text: 'Nice to meet you' }
-];
-
-// Routes
-app.get('/comments', (req, res) => {
-  res.json(comments);
+server.get('/comments', (req, res) => {
+  res.send('These are the comments');
 });
 
-app.post('/comments', (req, res) => {
-  const comment = req.body;
-  comments.push(comment);
-  res.json(comment);
+server.listen(port, () => {
+  console.log(`Server is listening on port ${port}`);
 });
 
-app.get('/comments/:id', (req, res) => {
-  const id = parseInt(req.params.id);
-  const comment = comments.find(c => c.id === id);
-  res.json(comment);
-});
-
-app.put('/comments/:id', (req, res) => {
-  const id = parseInt(req.params.id);
-  const newComment = req.body;
-  comments = comments.map(c => c.id === id ? newComment : c);
-  res.json(newComment);
-});
-
-app.delete('/comments/:id', (req, res) => {
-  const id = parseInt(req.params.id);
-  comments = comments.filter(c => c.id !== id);
-  res.json({ id });
-});
-
-app.listen(port, () => {
-  console.log(`Server started at http://localhost:${port}`);
-});
+// Run the server with node comments.js and visit http://localhost:3000/comments in the browser to see the response
